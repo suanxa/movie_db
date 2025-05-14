@@ -13,6 +13,7 @@
                     <div class="card-body d-flex flex-column justify-content-between" style="width: 60%;">
                         <h5 class="card-title">{{ $movie->title }}</h5>
                         <p class="card-text">{{ Str::limit($movie->synopsis, 100, '...') }}</p>
+                        <p class="card-text">Year : {{ $movie->year }}</p>
                         <a href="#" class="btn btn-success align-self-start">Lihat Selanjutnya</a>
                     </div>
                 </div>

@@ -18,7 +18,7 @@
                 <!-- Search Bar -->
                 <form class="d-flex" action="{{ route('movies.search') }}" method="GET">
                     <input class="form-control me-2" type="search" name="query" placeholder="Search by title" aria-label="Search" value="{{ request()->query('query') }}">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
+                    <button class="btn btn-outline-dark" type="submit">Search</button>
                 </form>
             </div>
         </div>
