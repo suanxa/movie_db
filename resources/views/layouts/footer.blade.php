@@ -18,10 +18,11 @@
     </style>
 </head>
 <body>
-    <footer class="bg-success text-center text-white py-3">
-        <div class="container">
-            Copyright &copy; <?php echo date('Y'); ?> by suanXa
-        </div>
-    </footer>
+    <footer class="bg-dark text-center text-light py-3">
+    <div class="container">
+        Copyright &copy; <?php echo date('Y'); ?> by suanXa
+    </div>
+</footer>
+
 </body>
 </html>
