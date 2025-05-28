@@ -65,6 +65,41 @@ class MovieController extends Controller
         return redirect()->route('movies.index')->with('success', 'Movie berhasil ditambahkan!');   
     }
 
+    public function update(Request $request, $id)
+{
+    $movie = Movie::findOrFail($id);
+
+    $validated = $request->validate([
+        'title'       => 'required|string|max:255',
+        'slug'        => 'required|string|unique:movies,slug,' . $movie->id,
+        'synopsis'    => 'required|string',
+        'year'        => 'required|integer|min:1900|max:2100',
+        'actors'      => 'required|string',
+        'category_id' => 'required|exists:categories,id',
+        'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+    ]);
+
+    // kalau upload cover baru
+    if ($request->hasFile('cover_image')) {
+        $imageName = time() . '.' . $request->cover_image->extension();
+        $request->cover_image->move(public_path('images'), $imageName);
+        $movie->cover_image = $imageName;
+    }
+
+    $movie->update([
+        'title'       => $validated['title'],
+        'slug'        => $validated['slug'],
+        'synopsis'    => $validated['synopsis'],
+        'year'        => $validated['year'],
+        'actors'      => $validated['actors'],
+        'category_id' => $validated['category_id'],
+        'cover_image' => $movie->cover_image
+    ]);
+
+    return redirect()->route('movies.index')->with('success', 'Movie berhasil diupdate!');
+}
+
+
 
     /**
      * Display the specified resource.
@@ -85,18 +120,21 @@ class MovieController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Categories $categories)
-    {
-        //
-    }
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Categories $categories)
-    {
-        //
+    public function destroy(Movie $movie)
+{
+    if ($movie->cover_image && file_exists(public_path('images/' . $movie->cover_image))) {
+        unlink(public_path('images/' . $movie->cover_image));
     }
+
+    $movie->delete();
+
+    return redirect()->route('movies.index')->with('success', 'Movie berhasil dihapus!');
+}
 
     public function search(Request $request)
     {
@@ -113,4 +151,18 @@ class MovieController extends Controller
         // dd($movie);
          return view('movie.detail', compact('movie'));
     }
+
+    public function editPage()
+    {
+        $movie = Movie::with('category')->get();
+        return view('movie.edit', compact('movie'));
+    }
+
+    public function editMovie($id)
+{
+    $movie = Movie::findOrFail($id);
+    $categories = Category::all();
+    return view('movie.editmovie', compact('movie', 'categories'));
+}
+
 }

@@ -15,6 +15,11 @@
                     <li class="nav-item">
                         <a class="nav-link @yield('navWatch')" href="{{ route('movies.create') }}">Input Movies</a>
                     </li>
+                    </li>
+                       <li class="nav-item">
+    <a class="nav-link" href="{{ route('movies.editPage') }}">List Movie</a>
+</li>
+
                     @endauth
                 </ul>
 
@@ -26,7 +31,7 @@
 
                 @auth
             <div class="d-flex align-items-center text-white me-2">
-                Hello, {{ explode(' ', auth()->user()->name)[0] ?? auth()->user()->email }}
+                Hello, {{ explode(' ', auth()->user()->name)[1] ?? auth()->user()->email }}
             </div>
             <form action="{{ route('logout') }}" method="POST">
                 @csrf

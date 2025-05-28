@@ -19,25 +19,21 @@
 
         <div class="mb-3">
             <label for="title" class="form-label">Judul</label>
-            <input type="text" name="title" class="form-control" required>
+            <input type="text" id="title" name="title" class="form-control" required>
         </div>
 
+        <!-- Slug di-hide, karena otomatis -->
+        <input type="hidden" id="slug" name="slug" value="">
+
         <div class="mb-3">
-            <label for="slug" class="form-label">Slug</label>
-            <input type="text" name="slug" class="form-control" required>
+            <label for="category_id" class="form-label">Kategori</label>
+            <select name="category_id" class="form-control" required>
+                <option value="">-- Pilih Kategori --</option>
+                @foreach ($categories as $category)
+                    <option value="{{ $category->id }}">{{ $category->category_name }}</option>
+                @endforeach
+            </select>
         </div>
-
-        <div class="mb-3">
-    <label for="category_id" class="form-label">Kategori</label>
-   <select name="category_id" class="form-control" required>
-    <option value="">-- Pilih Kategori --</option>
-    @foreach ($categories as $category)
-        <option value="{{ $category->id }}">{{ $category->category_name }}</option>
-    @endforeach
-</select>
-
-</div>
-
 
         <div class="mb-3">
             <label for="synopsis" class="form-label">Synopsis</label>
@@ -60,7 +56,21 @@
         </div>
 
         <button type="submit" class="btn btn-success">Simpan</button>
-
     </form>
 </div>
+
+<script>
+    const titleInput = document.getElementById('title');
+    const slugInput = document.getElementById('slug');
+
+    titleInput.addEventListener('input', function() {
+        let slug = this.value.toLowerCase()
+            .replace(/ /g, '-')       // spasi jadi tanda strip
+            .replace(/[^\w-]+/g, '')  // hapus karakter selain huruf, angka, dan strip
+            .replace(/--+/g, '-')     // ganti strip ganda jadi satu
+            .replace(/^-+|-+$/g, ''); // hapus strip di awal & akhir
+        
+        slugInput.value = slug;
+    });
+</script>
 @endsection
