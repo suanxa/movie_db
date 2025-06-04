@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Categories;
+use App\Http\Middleware\RoleAdmin;
 
 // Route::get('/', function () {
 //     return view('welcome');
@@ -28,7 +29,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/movie/edit', [MovieController::class, 'editPage'])->name('movies.editPage')->middleware('auth');
 Route::get('/movie/{id}/edit', [MovieController::class, 'edit'])->name('movie.edit')->middleware('auth');
 
-Route::get('/editmovie/{id}', [MovieController::class, 'editMovie'])->name('movies.editmovie')->middleware('auth');
+Route::get('/editmovie/{id}', [MovieController::class, 'editMovie'])->name('movies.editmovie')->middleware('auth', RoleAdmin::class);
 
 // Route::delete('/movie/{id}', [MovieController::class, 'destroy'])->name('movies.destroy')->middleware('auth');
 Route::delete('/movie/{movie}', [MovieController::class, 'destroy'])->name('movies.destroy');

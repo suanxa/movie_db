@@ -37,15 +37,19 @@
                     <a href="/movie/{{ $movie->id }}/{{ $movie->slug }}" class="btn btn-info btn-sm">Detail</a>
 
                     <!-- Tombol Edit -->
+                    
+                    
                     <a href="{{ route('movies.editmovie', $movie->id) }}" class="btn btn-warning btn-sm">Edit</a>
 
                     
                     <!-- Tombol Delete -->
+                    @can('delete-movie')
                     <form action="{{ route('movies.destroy', $movie->id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Yakin hapus movie ini?')">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                     </form>
+                    @endcan
                 </td>
             </tr>
             @empty

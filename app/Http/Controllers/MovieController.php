@@ -127,6 +127,9 @@ class MovieController extends Controller
      */
     public function destroy(Movie $movie)
 {
+    if (auth()->user()->role !== 'admin') {
+        return redirect()->route('movies.index')->with('error', 'Anda tidak memiliki izin untuk menghapus movie!');
+    }
     if ($movie->cover_image && file_exists(public_path('images/' . $movie->cover_image))) {
         unlink(public_path('images/' . $movie->cover_image));
     }
